@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GameName</title>
+    <script src="js/phaser.min.js"></script>
+</head>
+<body>
+    <div id="parent"></div>
+    <script>
+        var game = new Phaser.Game(800,600,Phaser.CANVAS,'parent',{
+            preload:preload,//资源预加载
+            create:create,//创建场景
+            update:update//逻辑实现
+        });
+        function preload() {
+            console.log('资源加载');
+            game.load.image('shuttlecock','assets/star.png');//图片加载 星星
+            game.load.image('sky','assets/bg.jpg');//背景
+            //game.load.image('sky','assets/sky.png');//背景
+            game.load.spritesheet('dude','assets/dude.png',32,48);//加载精灵图 角色
+            //game.load.image('ground','assets/platform.png');//地板
+            game.load.spritesheet('ball','assets/ball.png',32,48);//加载精灵图 角色
+        }
+        var player1;//用户一
+        var player2;//用户二
+        var cursors;//输入
+        var A;//键盘A
+        var D;//键盘D
+        var ball;//球（毽子）
+        var flag = 0;//判断球（毽子）属于谁,1是player1出球,2是player2出球
+        function create() {
+            console.log('创建场景')
+            game.physics.startSystem(Phaser.ARCADE);//启动ARCADE物理引擎
+            game.add.sprite(0,0,'sky');//将资源sky添加入场景
+            //设置地板
+            //latforms=game.add.group();
+            //platforms.enableBody=true;//启动组的物理引擎
+            //var ledge=platforms.create(150,450,'ground');
+            //ledge.body.immovable=true;//不可移动
+            //角色--------
+            player1=game.add.sprite(20,450,'dude');
+            game.physics.arcade.enable(player1);//创建角色1的物理属性
+            player1.body.collideWorldBounds=true;//碰撞世界范围
+            player2=game.add.sprite(750,450,'dude');
+            game.physics.arcade.enable(player2);//创建角色1的物理属性
+            player2.body.collideWorldBounds=true;//碰撞世界范围
+            //创建按键方向 ↑←↓→
+            cursors=game.input.keyboard.createCursorKeys();
+            //创建WASD按键
+            A = game.input.keyboard.addKey(Phaser.Keyboard.A);
+            D = game.input.keyboard.addKey(Phaser.Keyboard.D);
+            //球---------
+            ball = game.add.sprite(game.world.centerX,game.world.centerY,"ball");
+            // game.physics.arcade.enable(ball);//创建角色的物理属性
+            // ball.body.gravity.y=300;//设置球的重力
+            ball.anchor.x = 15;
+            ball.anchor.y = -10;
+            ball.xSpeed = 3;
+            ball.ySpeed = 5;
+            game.physics.arcade.enable(ball);//创建ball的物理属性
+            ball.body.gravity.y=200;//设置ball的重力
+        }
+        function update() {
+            console.log('游戏循环');
+            //game.physics.arcade.collide(player1,platforms);//用户1碰撞检测
+            //game.physics.arcade.collide(player2,platforms);//用户2碰撞检测
+            // --------------------角色移动控制---------------------
+            //player1操作：上下左右
+            if (A.isDown) {
+                player1.body.velocity.x=-150;
+                player1.animations.play('left');
+            } else if (D.isDown) {
+                player1.body.velocity.x=150;
+                player1.animations.play('right');
+            } else {
+                player1.body.velocity.x=0;//加上这个判断则每按一次运动一次否则直接滑翔
+                player1.frame=4;//精灵图第4帧
+            }
+            //player1使用WASD
+            if (cursors.left.isDown) {
+                player2.body.velocity.x=-150;
+                player2.animations.play('left');
+            } else if (cursors.right.isDown) {
+                player2.body.velocity.x=150;
+                player2.animations.play('right');
+            } else {
+                player2.bame=4;//精灵图第4帧
+                player2.body.velocity.x=0;//加上这个判断则每按一次运动一次否则直接滑翔
+            }
+            // --------------------接球（碰撞）监听---------------------
+            //起始,由palyer1发球，但是因为发球不能乘以系数，因此由flag为0开始
+            if(flag==0) {
+                ball.x += ball.xSpeed;
+                ball.y -= ball.ySpeed;
+                //如果player2接到了球，flag=2
+                if(game.physics.arcade.overlap(player2, ball)) {//碰撞监听
+                    flag=2;
+                    console.log("player2接到了球！！")
+                }
+            }
+            //球属于player1,flag=1
+            if(flag==1) {
+                ball.x += ball.xSpeed;
+                //注意此时ySpeed速度过小而重力过大容易轻轻弹起后落下，因此需要乘以一个系数
+                ball.y -= ball.ySpeed*4;
+                //如果player2接到了球，flag=2
+                if(game.physics.arcade.overlap(player2, ball)) {//碰撞监听
+                    flag=2;
+                    console.log("player2接到了球！！")
+                }
+            }
+            //球属于player2,flag=2
+            if(flag==2) {
+                ball.x -= ball.xSpeed;
+                //注意此时ySpeed速度过小而重力过大容易轻轻弹起后落下，因此需要乘以一个系数
+                ball.y -= ball.ySpeed*2.5;
+                //如果player1接到了球，flag=1
+                if(game.physics.arcade.overlap(player1, ball)) {//碰撞监听
+                    flag=1;
+                    console.log("player1接到了球！！")
+                }
+            }
+            //-----------------胜负判断------------------
+            //监听球的y为0时所属x的位置，在场地中间画条中间线
+            console.log("ball.x:"+ball.x+"ball.y:"+ball.y)
+            if(ball.y > 300 && ball.x < 450){
+                alert("player1失败")
+            }else if (ball.y > 300 && ball.x > 450){
+                alert("player2失败")
+            }
+
+        }
+
+    </script>
+</body>
+</html>

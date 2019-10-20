@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GameName</title>
+    <script src="js/phaser.min.js"></script>
+</head>
+<body>
+<div id="parent"></div>
+<script>
+    var game = new Phaser.Game(800,600,Phaser.CANVAS,'parent',{
+        preload:preload,//资源预加载
+        create:create,//创建场景
+        update:update//逻辑实现
+    });
+    function preload() {
+        console.log('资源加载');
+        game.load.spritesheet('ball','assets/ball.png',32,48);//加载球
+    }
+    var ball;//球（毽子）
+    function create() {
+        console.log('创建场景')
+        game.physics.startSystem(Phaser.ARCADE);//启动ARCADE物理引擎
+        //球---------
+        ball = game.add.sprite(game.world.centerX,game.world.centerY,"ball");
+        ball.anchor.x = 15;
+        ball.anchor.y = -10;
+        ball.xSpeed = 0.5;
+        ball.ySpeed = 0.5;
+        game.physics.arcade.enable(ball);//创建角色的物理属性
+        ball.body.gravity.y=200;//设置角色的重力
+    }
+    function update() {
+        console.log('游戏循环');
+        parabola();
+
+    }
+
+    function parabola() {
+        ball.y-= 5;
+
+
+    }
+</script>
+</body>
+</html>
