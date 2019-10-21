@@ -20,7 +20,8 @@
             //game.load.image('sky','assets/sky.png');//背景
             game.load.spritesheet('dude','assets/dude.png',32,48);//加载精灵图 角色
             //game.load.image('ground','assets/platform.png');//地板
-            game.load.spritesheet('ball','assets/ball.png',32,48);//加载精灵图 角色
+            // game.load.spritesheet('ball','assets/ball.png',32,48);//加载精灵图 角色
+            game.load.spritesheet('ball','assets/jianzi.png',32,48);//加载精灵图 角色
         }
         var player1;//用户一
         var player2;//用户二
@@ -125,8 +126,10 @@
             //监听球的y为0时所属x的位置，在场地中间画条中间线
             console.log("ball.x:"+ball.x+"ball.y:"+ball.y)
             if(ball.y > 300 && ball.x < 450){
+                ball.kill();
                 alert("player1失败")
             }else if (ball.y > 300 && ball.x > 450){
+                ball.kill();
                 alert("player2失败")
             }
 
