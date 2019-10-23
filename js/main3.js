@@ -19,11 +19,11 @@
         }
         this.preload = function () {
             //资源加载
-            game.load.image("loadingBg", 'assets/img/loadingBg.png');
+            game.load.image("loadingBg", 'assets/img/loadingBg2.png');
             game.load.image('btn_start', 'assets/img/btn_start.png');
             game.load.spritesheet('player1','assets/img/player1.png',48,48);//加载角色1
             game.load.spritesheet('player2','assets/img/player2.png',32,48);//加载角色2
-            // game.load.audio('bgm', 'audio/bgm.mp3', true);
+            game.load.audio('bgm', 'audio/bgm.mp3', true);
             game.load.image('sky','assets/img/bg.png');//背景
             game.load.image('player1Win','assets/img/player1Win.png');//player1获胜
             game.load.image('player2Win','assets/img/player2Win.png');//player2获胜
@@ -43,8 +43,8 @@
     var startState = function (game) {
         this.create = function () {
             //进入开始页面开始播放BGM
-            // bgm = game.add.sound('bgm', 0.5, true);
-            // bgm.play();
+            bgm = game.add.sound('bgm', 0.5, true);
+            bgm.play();
             game.loadbg = game.add.sprite(0, 0, 'loadingBg');
             loadbg =  game.loadbg;
             //背景页面位置
@@ -162,9 +162,9 @@
             if(ball.y > 600 && from == 0){
                 ball.kill();
                 game.player1Win = game.add.sprite(0,0,'player1Win');//将资源sky添加入场景
-                game.player1Win.x = 0.2*gameW;
+                game.player1Win.x = 0.13*gameW;
                 game.player1Win.y = 0.2*gameH;
-                var button2 = game.add.button(gameW/2.2, gameH*0.71, 'btn_start', actionOnClick, this, 2, 1, 0);
+                var button2 = game.add.button(gameW/2.5, gameH*0.71, 'btn_start', actionOnClick, this, 2, 1, 0);
                 button2.anchor.setTo(0.5, 0.5);
                 button2.scale.setTo(0.5*DPR);
                 function actionOnClick () {
@@ -175,9 +175,9 @@
             if(ball.y > 600 && from == 2 ){
                 ball.kill();
                 game.player2Win = game.add.sprite(0,0,'player2Win');//将资源sky添加入场景
-                game.player2Win.x = 0.2*gameW;
+                game.player2Win.x = 0.13*gameW;
                 game.player2Win.y = 0.2*gameH;
-                var button2 = game.add.button(gameW/2.2, gameH*0.71, 'btn_start', actionOnClick, this, 2, 1, 0);
+                var button2 = game.add.button(gameW/2.5, gameH*0.71, 'btn_start', actionOnClick, this, 2, 1, 0);
                 button2.anchor.setTo(0.5, 0.5);
                 button2.scale.setTo(0.5*DPR);
                 function actionOnClick () {
@@ -187,10 +187,10 @@
             }
             if(ball.y > 600 && from == 1 ){
                 ball.kill();
-                game.player2Win = game.add.sprite(0,0,'player2Win');//将资源sky添加入场景
-                game.player2Win.x = 0.2*gameW;
+                game.player2Win = game.add.sprite(0,0,'player1Win');//将资源sky添加入场景
+                game.player2Win.x = 0.13*gameW;
                 game.player2Win.y = 0.2*gameH;
-                var button2 = game.add.button(gameW/2.2, gameH*0.71, 'btn_start', actionOnClick, this, 2, 1, 0);
+                var button2 = game.add.button(gameW/2.5, gameH*0.71, 'btn_start', actionOnClick, this, 2, 1, 0);
                 button2.anchor.setTo(0.5, 0.5);
                 button2.scale.setTo(0.5*DPR);
                 function actionOnClick () {
