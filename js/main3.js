@@ -96,8 +96,8 @@
             game.physics.arcade.enable(ball);//创建球的物理属性
             ball.body.collideWorldBounds=true;//设置球碰撞世界范围
             ball.body.gravity.y=300;//设置ball的重力
-            ball.body.velocity.x=200;
-            ball.body.velocity.y=-350;
+            ball.body.velocity.x=200;//设置ball的x轴速度
+            ball.body.velocity.y=-350;//设置ball的y轴速度
 
 
         }
@@ -202,9 +202,11 @@
 
         };
     }
-
+    //游戏加载
     game.state.add('boot',bootState);
+    //开始游戏页面
     game.state.add('start',startState);
+    //游戏对战页面
     game.state.add('main',mainState);
     //游戏初始化
     game.state.start('boot')
